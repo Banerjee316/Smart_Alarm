@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.coffeecoders.smartalarm">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Custom.Theme.SmartAlarm">
+        <activity
+            android:name=".calender.Calender_activity"
+            android:exported="false" />
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+        <meta-data
+            android:name ="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"
+        />
+
+        <activity
+            android:name=".MapsViewActivity"
+            android:exported="false"
+            android:label="@string/title_activity_maps_view"
+            android:parentActivityName=".AddAlarm_Activity"
+            android:theme="@style/mapTheme" />
+        <activity
+            android:name=".About"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Custom.Theme.SmartAlarm.1" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddAlarm_Activity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Custom.Theme.SmartAlarm.1">
+            <intent-filter>
+                <action android:name="from alarmActivity" />
+                <action android:name="from ringtoneActivity" />
+                <action android:name="from alarmActivity new" />
+                <action android:name="from repeatDayActivity" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".CancelAlarm"
+            android:excludeFromRecents="true"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true" />
+        <activity
+            android:name=".Ringtone"
+            android:exported="true"
+            android:parentActivityName=".AddAlarm_Activity"
+            android:theme="@style/Custom.Theme.SmartAlarm.1">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".RepeatDayActivity"
+            android:exported="true"
+            android:parentActivityName=".AddAlarm_Activity"
+            android:theme="@style/Custom.Theme.SmartAlarm.1">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <service
+            android:name=".ScheduleService"
+            android:exported="false" />
+        <service
+            android:name=".calender.cal_rec_service.CalService"
+            android:exported="false" />
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote"
+            android:showOnLockScreen="true" />
+        <receiver
+            android:name=".receiver.StopReceiver"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="stop alarm" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.SnoozeReceiver"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="snooze Alarm" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.CancelAlarmReceiver"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="cancel alarm" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.BootUpReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="smart alarm refresh alarm" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".calender.cal_rec_service.CalReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+
+        </receiver>
+        <provider
+            android:name=".data.AlarmDataProvider"
+            android:authorities="com.coffeecoders.smartalarm"
+            android:exported="false" />
+    </application>
+
+</manifest>
